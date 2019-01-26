@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
     <title>Dungeons and Dragons Initiative Tracker</title>
 </head>
+
 <body>
     <div class="jumbotron jumbotron-fluid text-center">
         <div class="container">
@@ -24,12 +27,12 @@
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Initiative</th>
-                        <th scope="col">Health Points</th>
-                        <th scope="col">Armor Class</th>
-                        <th scope="col">Heal</th>
-                        <th scope="col">Damage</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Initiative</th>
+                            <th scope="col">Health Points</th>
+                            <th scope="col">Armor Class</th>
+                            <th scope="col">Heal</th>
+                            <th scope="col">Damage</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,7 +61,8 @@
                 <div class="row">
                     <div class="col">
                         <!--BUTTON TO ADVANCE INITIATIVE ORDER-->
-                        <button type="button" class="btn btn-warning btn-block mb-5" id="next-initiative">Advance Initiative</button>
+                        <button type="button" class="btn btn-warning btn-block mb-5" id="next-initiative">Advance
+                            Initiative</button>
                     </div>
                 </div>
                 <div class="row">
@@ -69,6 +73,7 @@
             </div>
         </div>
 
-<script src="assets/js/logic.js"></script>
+        <script src="assets/js/logic.js"></script>
 </body>
+
 </html>

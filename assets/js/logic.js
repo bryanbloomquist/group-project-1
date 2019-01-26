@@ -1,5 +1,16 @@
 // Initialize Firebase
 
+var config = {
+    apiKey: "AIzaSyBtgYxI3YHt9fOIoT3qSsYZufBzb2v-o8U",
+    authDomain: "group-project-1-tracker.firebaseapp.com",
+    databaseURL: "https://group-project-1-tracker.firebaseio.com",
+    projectId: "group-project-1-tracker",
+    storageBucket: "group-project-1-tracker.appspot.com",
+    messagingSenderId: "802516410125"
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
 
 
 // When Add Character button is clicked
