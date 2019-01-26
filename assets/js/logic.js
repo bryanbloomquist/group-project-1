@@ -21,7 +21,6 @@ var InitiativeList = {
         InitiativeNumber: 17
     }
 };
-database.ref().push(InitiativeList);
  
 database.ref().on("value", function (snapshot) {
     $("#tbody").append(
