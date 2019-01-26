@@ -7,12 +7,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Document</title>
+    <title>Dungeons and Dragons Initiative Tracker</title>
 </head>
 <body>
-    
+    <div class="jumbotron jumbotron-fluid text-center">
+        <div class="container">
+            <h1>Dungeons and Dragons</h1>
+            <h3>Initiative Tracker</h3>
+        </div>
+    </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <!--TABLE/INITIATIVE TRACKER-->
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Initiative</th>
+                        <th scope="col">Health Points</th>
+                        <th scope="col">Armor Class</th>
+                        <th scope="col">Heal</th>
+                        <th scope="col">Damage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col">
+                        <!--ADD NEW CHARACTER BUTTON-->
+                        <button type="button" class="btn btn-warning btn-block mb-5" id="new-character">Add Character</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <!--LOAD EXISTING CHARACTER BUTTON-->
+                        <button type="button" class="btn btn-warning btn-block mb-5" id="load-character">Load Character</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <!--ADD MONSTER FORM(?)-->
+                        <button type="button" class="btn btn-warning btn-block mb-5" id="load-monster">Load Monster</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <!--BUTTON TO ADVANCE INITIATIVE ORDER-->
+                        <button type="button" class="btn btn-warning btn-block mb-5" id="next-initiative">Advance Initiative</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <!--SPOTIFY PLAYER-->
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <script src="assets/js/logic.js"></script>
+<script src="assets/js/logic.js"></script>
 </body>
 </html>
