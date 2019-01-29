@@ -112,7 +112,6 @@ $("#load-monster").on("click", function(event) {
             userMonsterAC = response.armor_class;
             userMonsterName = response.name;
             userMonsterDex = response.dexterity;
-            console.log(userMonsterDex);
             rollInitiative(userMonsterDex);
             database.ref().push({
                 ArmorClass: userMonsterAC,
@@ -145,7 +144,6 @@ function rollInitiative(x){
     else if (x > 25 && x < 28){initiativeRoll+=8}
     else if (x > 27 && x < 30){initiativeRoll+=9}
     else if (x === 30){initiativeRoll+=10}
-    console.log(monsterInitiative);
 }
 
 // When Advance Initiative button is clicked
