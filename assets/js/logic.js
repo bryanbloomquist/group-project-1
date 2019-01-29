@@ -11,15 +11,75 @@ var config = {
 firebase.initializeApp(config);
 
 var database = firebase.database();
-
+var name = "test";
+var maxHealth = 25;
+var currentHP = 2;
+var ArmorClass = 10;
+var InitiativeNumber = 10;
 var userMonsterHP = "";
 var userMonsterAC = "";
 var userMonsterName= "";
 
+// database.ref().on("value", function (snapshot){
+//     event.preventDefault();
+//     $("#tbody").empty();
+//     $("#tbody").append(
+//         `
+//         <tr>
+//             <th scope="col">${snapshot.val().name}</th>
+//             <th scope="col">${snapshot.val().InitiativeNumber}</th>
+//             <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
+//             <th scope="col">${snapshot.val().ArmorClass}</th>
+//             <th 
+//                 scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
+//                 <button type="button" class="btn btn-success">Heal</button>
+//                 <button type="button" class="btn btn-danger">Damage</button>
+//             </th>
+//         </tr>
+//         `
+//     )
+
+
+// }, function (errorObject) {
+//     console.log("Errors handled: " + errorObject.code);
+// });
+
+database.ref().on("child_added", function (snapshot) {
+    event.preventDefault();
+    $("#tbody").append(
+        `
+        <tr>
+            <th scope="col">${snapshot.val().name}</th>
+            <th scope="col">${snapshot.val().InitiativeNumber}</th>
+            <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
+            <th scope="col">${snapshot.val().ArmorClass}</th>
+            <th 
+                scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
+                <button type="button" class="btn btn-success">Heal</button>
+                <button type="button" class="btn btn-danger">Damage</button>
+            </th>
+        </tr>
+        `
+    )
+}, function (errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+});
+
 // When Add Character button is clicked
 $("#new-character").on("click", function (event) {
 
-
+    // name = $("#name-input").val().trim();
+    // maxHealth = $("#maxHealth-input").val().trim();
+    // currentHP = $("#currentHP-input").val().trim();
+    // ArmorClass = $("#ArmorClass-input").val().trim();
+    // InitiativeNumber = $("#InitiativeNumber-input").val().trim();
+    database.ref().push({
+        name: name,
+        maxHealth: maxHealth,
+        currentHP: currentHP,
+        ArmorClass: ArmorClass,
+        InitiativeNumber: InitiativeNumber
+    });
 })
 
 // When Load Character button is clicked
@@ -65,4 +125,6 @@ $("#load-monster").on("click", function(event) {
 $("#next-initiative").on("click", function (event) {
 
 
-})
+});
+
+//database.ref("/Characters").child(snapshot).remove();
