@@ -20,6 +20,7 @@ var userMonsterHP = "";
 var userMonsterAC = "";
 var userMonsterName= "";
 
+
 // database.ref().on("value", function (snapshot){
 //     event.preventDefault();
 //     $("#tbody").empty();
@@ -43,6 +44,7 @@ var userMonsterName= "";
 // }, function (errorObject) {
 //     console.log("Errors handled: " + errorObject.code);
 // });
+
 
 database.ref().on("child_added", function (snapshot) {
     event.preventDefault();
@@ -80,13 +82,13 @@ $("#new-character").on("click", function (event) {
         ArmorClass: ArmorClass,
         InitiativeNumber: InitiativeNumber
     });
-})
+});
 
 // When Load Character button is clicked
 $("#load-character").on("click", function (event) {
 
 
-})
+});
 
 // When Load Monster button is clicked
 $("#load-monster").on("click", function(event) {
