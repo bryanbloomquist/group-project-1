@@ -16,9 +16,11 @@ var maxHealth = 25;
 var currentHP = 2;
 var ArmorClass = 10;
 var InitiativeNumber = 10;
+var monsterInitiative = 0;
 var userMonsterHP = "";
 var userMonsterAC = "";
 var userMonsterName= "";
+var dexBonus = 0;
 
 // database.ref().on("value", function (snapshot){
 //     event.preventDefault();
@@ -111,15 +113,43 @@ $("#load-monster").on("click", function(event) {
             userMonsterHP = response.hit_points;
             userMonsterAC = response.armor_class;
             userMonsterName = response.name;
+            userMonsterDex = response.dexterity;
+            rollInitiative(userMonsterDex);
             database.ref().push({
-                maxHealth: userMonsterHP,
-                currentHP: userMonsterHP,
                 ArmorClass: userMonsterAC,
+                InitiativeNumber: monsterInitiative,
+                currentHP: userMonsterHP,
+                maxHealth: userMonsterHP,
                 name: userMonsterName
             })
         })
     })
+    $("form").trigger("reset");
 })
+
+// Generate Initiative For Monsters
+function rollInitiative(x){
+    dexBonus = 0;
+    if (x === 1){dexBonus-=5}
+    else if (x > 2 && x < 4){dexBonus-=4}
+    else if (x > 3 && x < 6){dexBonus-=3}
+    else if (x > 5 && x < 8){dexBonus-=2}
+    else if (x > 7 && x < 10){dexBonus-=1}
+    else if (x > 9 && x < 12){dexBonus===0}
+    else if (x > 11 && x < 14){dexBonus+=1}
+    else if (x > 13 && x < 16){dexBonus+=2}
+    else if (x > 15 && x < 18){dexBonus+=1}
+    else if (x > 17 && x < 20){dexBonus+=4}
+    else if (x > 19 && x < 22){dexBonus+=5}
+    else if (x > 21 && x < 24){dexBonus+=6}
+    else if (x > 23 && x < 26){dexBonus+=7}
+    else if (x > 25 && x < 28){dexBonus+=8}
+    else if (x > 27 && x < 30){dexBonus+=9}
+    else if (x === 30){dexBonus+=10}
+    console.log(dexBonus);
+    monsterInitiative = (Math.floor(Math.random()*20)+1)+dexBonus;
+    console.log(monsterInitiative);
+}
 
 // When Advance Initiative button is clicked
 $("#next-initiative").on("click", function (event) {
