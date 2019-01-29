@@ -49,21 +49,17 @@ var dexBonus = 0;
 
 
 database.ref().on("child_added", function (snapshot) {
-    event.preventDefault();
     $("#tbody").append(
-        `
-        <tr>
-            <th scope="col">${snapshot.val().name}</th>
-            <th scope="col">${snapshot.val().InitiativeNumber}</th>
-            <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
-            <th scope="col">${snapshot.val().ArmorClass}</th>
-            <th 
-                scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
-                <button type="button" class="btn btn-success">Heal</button>
-                <button type="button" class="btn btn-danger">Damage</button>
-            </th>
-        </tr>
-        `
+        "<tr>" +
+            "<td>" + snapshot.val().name + "</td>" +
+            "<td>" + snapshot.val().InitiativeNumber + "</td>" +
+            "<td>" + snapshot.val().currentHP + " / " + snapshot.val().maxHealth + "</td>" +
+            "<td>" + snapshot.val().ArmorClass + "</td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-success'>Heal</button>" +
+                "<button type='button' class='btn btn-danger'>Damage</button>" +
+            "</td>" +
+        "</tr>"
     )
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
@@ -116,6 +112,7 @@ $("#load-monster").on("click", function(event) {
             userMonsterAC = response.armor_class;
             userMonsterName = response.name;
             userMonsterDex = response.dexterity;
+            console.log(userMonsterDex);
             rollInitiative(userMonsterDex);
             database.ref().push({
                 ArmorClass: userMonsterAC,
@@ -131,25 +128,23 @@ $("#load-monster").on("click", function(event) {
 
 // Generate Initiative For Monsters
 function rollInitiative(x){
-    dexBonus = 0;
-    if (x === 1){dexBonus-=5}
-    else if (x > 2 && x < 4){dexBonus-=4}
-    else if (x > 3 && x < 6){dexBonus-=3}
-    else if (x > 5 && x < 8){dexBonus-=2}
-    else if (x > 7 && x < 10){dexBonus-=1}
-    else if (x > 9 && x < 12){dexBonus===0}
-    else if (x > 11 && x < 14){dexBonus+=1}
-    else if (x > 13 && x < 16){dexBonus+=2}
-    else if (x > 15 && x < 18){dexBonus+=1}
-    else if (x > 17 && x < 20){dexBonus+=4}
-    else if (x > 19 && x < 22){dexBonus+=5}
-    else if (x > 21 && x < 24){dexBonus+=6}
-    else if (x > 23 && x < 26){dexBonus+=7}
-    else if (x > 25 && x < 28){dexBonus+=8}
-    else if (x > 27 && x < 30){dexBonus+=9}
-    else if (x === 30){dexBonus+=10}
-    console.log(dexBonus);
-    monsterInitiative = (Math.floor(Math.random()*20)+1)+dexBonus;
+    var initiativeRoll = Math.floor(Math.random()*20)+1;
+    if (x === 1){initiativeRoll-=5}
+    else if (x > 2 && x < 4){initiativeRoll-=4}
+    else if (x > 3 && x < 6){initiativeRoll-=3}
+    else if (x > 5 && x < 8){initiativeRoll-=2}
+    else if (x > 7 && x < 10){initiativeRoll-=1}
+    else if (x > 9 && x < 12){initiativeRoll===0}
+    else if (x > 11 && x < 14){initiativeRoll+=1}
+    else if (x > 13 && x < 16){initiativeRoll+=2}
+    else if (x > 15 && x < 18){initiativeRoll+=3}
+    else if (x > 17 && x < 20){initiativeRoll+=4}
+    else if (x > 19 && x < 22){initiativeRoll+=5}
+    else if (x > 21 && x < 24){initiativeRoll+=6}
+    else if (x > 23 && x < 26){initiativeRoll+=7}
+    else if (x > 25 && x < 28){initiativeRoll+=8}
+    else if (x > 27 && x < 30){initiativeRoll+=9}
+    else if (x === 30){initiativeRoll+=10}
     console.log(monsterInitiative);
 }
 
