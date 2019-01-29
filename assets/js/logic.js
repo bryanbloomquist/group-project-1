@@ -19,11 +19,28 @@ var InitiativeNumber = 10;
 
 // database.ref().on("value", function (snapshot){
 //     event.preventDefault();
-    
+//     $("#tbody").empty();
+//     $("#tbody").append(
+//         `
+//         <tr>
+//             <th scope="col">${snapshot.val().name}</th>
+//             <th scope="col">${snapshot.val().InitiativeNumber}</th>
+//             <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
+//             <th scope="col">${snapshot.val().ArmorClass}</th>
+//             <th 
+//                 scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
+//                 <button type="button" class="btn btn-success">Heal</button>
+//                 <button type="button" class="btn btn-danger">Damage</button>
+//             </th>
+//         </tr>
+//         `
+//     )
+
 
 // }, function (errorObject) {
 //     console.log("Errors handled: " + errorObject.code);
 // });
+
 
 database.ref().on("child_added", function (snapshot) {
     event.preventDefault();
@@ -49,11 +66,11 @@ database.ref().on("child_added", function (snapshot) {
 // When Add Character button is clicked
 $("#new-character").on("click", function (event) {
 
-    name = $("#name-input").val().trim();
-    maxHealth = $("#maxHealth-input").val().trim();
-    currentHP = $("#currentHP-input").val().trim();
-    ArmorClass = $("#ArmorClass-input").val().trim();
-    InitiativeNumber = $("#InitiativeNumber-input").val().trim();
+    // name = $("#name-input").val().trim();
+    // maxHealth = $("#maxHealth-input").val().trim();
+    // currentHP = $("#currentHP-input").val().trim();
+    // ArmorClass = $("#ArmorClass-input").val().trim();
+    // InitiativeNumber = $("#InitiativeNumber-input").val().trim();
     database.ref().push({
         name: name,
         maxHealth: maxHealth,
@@ -80,3 +97,5 @@ $("#next-initiative").on("click", function (event) {
 
 
 });
+
+//database.ref("/Characters").child(snapshot).remove();
