@@ -23,43 +23,22 @@ var userMonsterName= "";
 var dexBonus = 0;
 
 
-// database.ref().on("value", function (snapshot){
-//     event.preventDefault();
-//     $("#tbody").empty();
-//     $("#tbody").append(
-//         `
-//         <tr>
-//             <th scope="col">${snapshot.val().name}</th>
-//             <th scope="col">${snapshot.val().InitiativeNumber}</th>
-//             <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
-//             <th scope="col">${snapshot.val().ArmorClass}</th>
-//             <th 
-//                 scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
-//                 <button type="button" class="btn btn-success">Heal</button>
-//                 <button type="button" class="btn btn-danger">Damage</button>
-//             </th>
-//         </tr>
-//         `
-//     )
-
-
-// }, function (errorObject) {
-//     console.log("Errors handled: " + errorObject.code);
-// });
-
-
-database.ref().on("child_added", function (snapshot) {
-    $("#tbody").append(
-        "<tr>" +
-            "<td>" + snapshot.val().InitiativeNumber + "</td>" +
-            "<td>" + snapshot.val().name + "</td>" +
-            "<td>" + snapshot.val().currentHP + " / " + snapshot.val().maxHealth + "</td>" +
-            "<td>" + snapshot.val().ArmorClass + "</td>" +
-            "<td>" +
-                "<button type='button' class='btn btn-success'>Heal</button>" +
-                "<button type='button' class='btn btn-danger'>Damage</button>" +
-            "</td>" +
-        "</tr>"
+database.ref().child("Characters").on("child_added", function (snapshot) {
+    event.preventDefault();
+    $("tbody").append(
+        `
+        <tr id="${snapshot.child("name").val()}">
+            <th scope="col">${snapshot.child("InitiativeNumber").val()}</th>
+            <th scope="col">${snapshot.child("name").val()}</th>
+            <th scope="col">${snapshot.child("currentHP").val()}/${snapshot.child("maxHealth").val()}</th>
+            <th scope="col">${snapshot.child("ArmorClass").val()}</th>
+            <th 
+                scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
+                <button type="button" class="btn btn-success">Heal</button>
+                <button type="button" class="btn btn-danger">Damage</button>
+            </th>
+        </tr>
+        `
     )
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
@@ -162,7 +141,7 @@ $("#load-monster").on("click", function(event) {
             rollInitiative(userMonsterDex);
             var i;
             for (i=0; i<quantity; i++){
-                database.ref().push({
+                database.ref().child("Characters").push({
                     ArmorClass: userMonsterAC,
                     InitiativeNumber: monsterInitiative,
                     currentHP: userMonsterHP,
