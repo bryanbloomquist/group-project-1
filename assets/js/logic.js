@@ -17,40 +17,16 @@ var currentHP = 2;
 var ArmorClass = 10;
 var InitiativeNumber = 10;
 
-// database.ref().on("value", function (snapshot){
-//     event.preventDefault();
-//     $("#tbody").empty();
-//     $("#tbody").append(
-//         `
-//         <tr>
-//             <th scope="col">${snapshot.val().name}</th>
-//             <th scope="col">${snapshot.val().InitiativeNumber}</th>
-//             <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
-//             <th scope="col">${snapshot.val().ArmorClass}</th>
-//             <th 
-//                 scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
-//                 <button type="button" class="btn btn-success">Heal</button>
-//                 <button type="button" class="btn btn-danger">Damage</button>
-//             </th>
-//         </tr>
-//         `
-//     )
 
-
-// }, function (errorObject) {
-//     console.log("Errors handled: " + errorObject.code);
-// });
-
-
-database.ref().on("child_added", function (snapshot) {
+database.ref().child("Characters").on("child_added", function (snapshot) {
     event.preventDefault();
     $("#tbody").append(
         `
-        <tr>
-            <th scope="col">${snapshot.val().name}</th>
-            <th scope="col">${snapshot.val().InitiativeNumber}</th>
-            <th scope="col">${snapshot.val().currentHP}/${snapshot.val().maxHealth}</th>
-            <th scope="col">${snapshot.val().ArmorClass}</th>
+        <tr id="${snapshot.child("name").val()}">
+            <th scope="col">${snapshot.child("name").val()}</th>
+            <th scope="col">${snapshot.child("InitiativeNumber").val()}</th>
+            <th scope="col">${snapshot.child("currentHP").val()}/${snapshot.child("maxHealth").val()}</th>
+            <th scope="col">${snapshot.child("ArmorClass").val()}</th>
             <th 
                 scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
                 <button type="button" class="btn btn-success">Heal</button>
@@ -71,7 +47,7 @@ $("#new-character").on("click", function (event) {
     // currentHP = $("#currentHP-input").val().trim();
     // ArmorClass = $("#ArmorClass-input").val().trim();
     // InitiativeNumber = $("#InitiativeNumber-input").val().trim();
-    database.ref().push({
+    database.ref().child("Characters").push({
         name: name,
         maxHealth: maxHealth,
         currentHP: currentHP,
