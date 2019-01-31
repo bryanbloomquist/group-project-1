@@ -51,8 +51,8 @@ var dexBonus = 0;
 database.ref().on("child_added", function (snapshot) {
     $("#tbody").append(
         "<tr>" +
-            "<td>" + snapshot.val().name + "</td>" +
             "<td>" + snapshot.val().InitiativeNumber + "</td>" +
+            "<td>" + snapshot.val().name + "</td>" +
             "<td>" + snapshot.val().currentHP + " / " + snapshot.val().maxHealth + "</td>" +
             "<td>" + snapshot.val().ArmorClass + "</td>" +
             "<td>" +
@@ -64,6 +64,51 @@ database.ref().on("child_added", function (snapshot) {
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });
+
+
+// Sorts table so highest inititiatve is on top
+function orderCombat() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("combat-table");
+    console.log(table);
+    switching = true;
+    // make a loop that will continue until no switching has been done
+    while (switching) {
+        // start by saying no switching is done
+        switching = false;
+        rows = table.rows;
+        console.log(rows);
+        // loop through all table rows (except the first, which containse table headers <th>)
+        for (i=1; i<(rows.length-1); i++) {
+            // start by saying there should be no switching
+            shouldSwitch = false;
+            // get the two elements you want to compare, one from current row and one from the next
+            x = rows[i].cells[0].innerText;
+            console.log("x = "+x);
+            y = rows[i+1].cells[0].innerText;
+            console.log("y = "+y);
+            // check if the two rows should switch place
+            if (x < y){
+                // if so, mark as a switch and break the loop
+                shouldSwitch = true;
+                console.log("shouldSwitch = "+shouldSwitch);
+                console.log(switching);
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            // if a switch has been marked, make the switch and mark that a switch has been done
+            rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+
+$("#order-initiative").on("click", function() {
+    orderCombat();
+})
+
 
 // When Add Character button is clicked
 $("#new-character").on("click", function (event) {
@@ -92,6 +137,7 @@ $("#load-character").on("click", function (event) {
 $("#load-monster").on("click", function(event) {
     event.preventDefault();
     var monster=$("#user-monster").val().trim();
+    var quantity=$("#how-many").val().trim();
     var upperCaseMonster = "";
     var monsterWords = monster.split(" ");
     for(var i = 0; i<monsterWords.length;i++) {
@@ -112,14 +158,18 @@ $("#load-monster").on("click", function(event) {
             userMonsterAC = response.armor_class;
             userMonsterName = response.name;
             userMonsterDex = response.dexterity;
+            console.log("dexterity = "+userMonsterDex);
             rollInitiative(userMonsterDex);
-            database.ref().push({
-                ArmorClass: userMonsterAC,
-                InitiativeNumber: monsterInitiative,
-                currentHP: userMonsterHP,
-                maxHealth: userMonsterHP,
-                name: userMonsterName
-            })
+            var i;
+            for (i=0; i<quantity; i++){
+                database.ref().push({
+                    ArmorClass: userMonsterAC,
+                    InitiativeNumber: monsterInitiative,
+                    currentHP: userMonsterHP,
+                    maxHealth: userMonsterHP,
+                    name: userMonsterName
+                })
+            }
         })
     })
     $("form").trigger("reset");
@@ -128,6 +178,7 @@ $("#load-monster").on("click", function(event) {
 // Generate Initiative For Monsters
 function rollInitiative(x){
     var initiativeRoll = Math.floor(Math.random()*20)+1;
+    console.log("Initiative Roll = "+initiativeRoll);
     if (x === 1){initiativeRoll-=5}
     else if (x > 2 && x < 4){initiativeRoll-=4}
     else if (x > 3 && x < 6){initiativeRoll-=3}
@@ -144,6 +195,8 @@ function rollInitiative(x){
     else if (x > 25 && x < 28){initiativeRoll+=8}
     else if (x > 27 && x < 30){initiativeRoll+=9}
     else if (x === 30){initiativeRoll+=10}
+    monsterInitiative = initiativeRoll;
+    console.log("monster initiative = "+monsterInitiative);
 }
 
 // When Advance Initiative button is clicked
