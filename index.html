@@ -9,18 +9,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>Dungeons and Dragons Initiative Tracker</title>
 </head>
 
 <body>
+
     <div class="container">
         <div class="row">
+
             <div class="col-9">
                 <!--TABLE/INITIATIVE TRACKER-->
                 <table class="table" id="combat-table">
@@ -30,152 +28,83 @@
                             <th scope="col">Name</th>
                             <th scope="col">Health Points</th>
                             <th scope="col">Armor Class</th>
-                            <th scope="col">Heal</th>
-                            <th scope="col">Damage</th>
+                            <th scope="col">Heal/Damage</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="combat-tracker">
                     </tbody>
                 </table>
             </div>
+
             <div class="col-3">
+
                 <div class="row">
                     <div class="col">
-                        <!--ADD NEW CHARACTER BUTTON-->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-warning btn-block mb-5" id="new-character"
-                            data-toggle="modal" data-target="#exampleModalCenter">
-                            Add New Character
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Add New Character</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                        <!-- Add New Character Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-warning btn-block mb-5" id="new-character" data-toggle="modal" data-target="#exampleModalCenter">Add New Character</button>
+                    </div>
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <!-- Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Add New Character</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!-- Body -->
+                                <div class="modal-body">
+                                    <!-- Name -->
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="name-input">
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
+                                    <!-- Initiative Number -->
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Initiative Number</span>
                                         </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="InitiativeNumber-input">Initiative
-                                                    Number</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="maxHealth-input">Max Health</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="currentHP-input">Current HP</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="ArmorClass-input">Armor Class</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="InitiativeNumber-input">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    <!-- Max HP -->
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Max HP</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="maxHealth-input">
                                     </div>
+                                    <!-- Current HP -->
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Current HP</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="currentHP-input">
+                                    </div>
+                                    <!-- Armor Class -->
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Armor Class</span>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="ArmorClass-input">
+                                    </div>
+                                </div>
+                                <!-- End Buttons -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="new-character">Save changes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <!--LOAD EXISTING CHARACTER BUTTON-->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-warning btn-block mb-5" id="load-character"
-                            data-toggle="modal" data-target="#loadCharacter">
-                            Load Character
-                        </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="loadCharacter" tabindex="-1" role="dialog" aria-labelledby="loadCharacterTitle"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="loadCharacterTitle">Load Character</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="characterName-input">Character Name</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="InitiativeNumber-input">Initiative
-                                                    Number</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="maxHealth-input">Max Health</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="currentHP-input">Current HP</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="ArmorClass-input">Armor Class</span>
-                                            </div>
-                                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                                aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Add Monster -->
                 <div class="row border border-black bg-secondary mb-3 p-3">
                     <div class="col">
-                        <!--ADD MONSTER FORM(?)-->
                         <form>
                             <label for="user-monster">Add A Monster</label>
                             <input type="text" class="form form-control mb-2" id="user-monster" placeholder="Monster Name">
@@ -185,20 +114,34 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Sort Table Into Initiative Order-->
                 <!-- <div class="row"> -->
                     <!-- <div class="col"> -->
-                        <!-- BUTTON TO ADVANCE INITIATIVE ORDER-->
-                        <!-- <button type="button" class="btn btn-warning btn-block mb-5" id="next-initiative">Advance Initiative</button> -->
+                        <!-- <button type="button" class="btn btn-warning btn-block mb-5" id="order-initiative">Initiative Order</button> -->
                     <!-- </div> -->
                 <!-- </div> -->
+
+                <!-- Time Tracker -->
                 <div class="row">
                     <div class="col">
-                        <!--SORT TABLE INTO INITIATIVE ORDER-->
-                        <button type="button" class="btn btn-warning btn-block mb-5" id="order-initiative">Sort Table</button>
+                        <h2>Current Time</h2>
+                        <table class="clock table" id="clockAPI">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Zone</th>
+                                    <th scope="col">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="current-time">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
 
         <script src="assets/js/logic.js"></script>
 </body>

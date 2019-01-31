@@ -24,22 +24,32 @@ var dexBonus = 0;
 
 
 database.ref().child("Characters").on("child_added", function (snapshot) {
-    event.preventDefault();
-    $("tbody").append(
-        `
-        <tr id="${snapshot.child("name").val()}">
-            <th scope="col">${snapshot.child("InitiativeNumber").val()}</th>
-            <th scope="col">${snapshot.child("name").val()}</th>
-            <th scope="col">${snapshot.child("currentHP").val()}/${snapshot.child("maxHealth").val()}</th>
-            <th scope="col">${snapshot.child("ArmorClass").val()}</th>
-            <th 
-                scope="col"><input class="HealthInput" type="number" name="quantity" min="1" max="500">
-                <button type="button" class="btn btn-success">Heal</button>
-                <button type="button" class="btn btn-danger">Damage</button>
-            </th>
-        </tr>
-        `
+    $("#combat-tracker").append(
+        "<tr id=" + snapshot.child("name").val() + ">" +
+            "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
+            "<td>" + snapshot.child("name").val() + "</td>" +
+            "<td>" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
+            "<td>" + snapshot.child("ArmorClass").val() + "</td>" +
+            "<td>" +
+                "<input class='HealthInput' type='number' name='quantity' min='1' max='500'>" +
+                "<button type='button' class='btn btn-success Heal'>Heal</button>" +
+                "<button type='button' class='btn btn-danger Damage'>Damage</button>" +
+            "</td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-dark Remove' id="+snapshot.key +">Remove</button>" +
+            "</td>" +
+        "</tr>"
     )
+    orderCombat();
+}, function (errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+});
+
+
+database.ref().child("Characters").on("child_removed", function (snapshot) {
+    event.preventDefault();
+    var removeVar = "#" + snapshot.child("name").val();
+    $(removeVar).remove();
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });
@@ -84,20 +94,19 @@ function orderCombat() {
 }
 
 
-$("#order-initiative").on("click", function() {
-    orderCombat();
-})
+// $("#order-initiative").on("click", function() {
+//     orderCombat();
+// })
 
 
 // When Add Character button is clicked
-$("#new-character").on("click", function (event) {
-
-    // name = $("#name-input").val().trim();
-    // maxHealth = $("#maxHealth-input").val().trim();
-    // currentHP = $("#currentHP-input").val().trim();
-    // ArmorClass = $("#ArmorClass-input").val().trim();
-    // InitiativeNumber = $("#InitiativeNumber-input").val().trim();
-    database.ref().push({
+$(document).on("click", "#new-character",function () {
+    name = $("#name-input").val().trim();
+    maxHealth = $("#maxHealth-input").val().trim();
+    currentHP = $("#currentHP-input").val().trim();
+    ArmorClass = $("#ArmorClass-input").val().trim();
+    InitiativeNumber = $("#InitiativeNumber-input").val().trim();
+    database.ref().child("Characters").push({
         name: name,
         maxHealth: maxHealth,
         currentHP: currentHP,
@@ -106,11 +115,12 @@ $("#new-character").on("click", function (event) {
     });
 });
 
-// When Load Character button is clicked
-$("#load-character").on("click", function (event) {
 
-
+$(document).on("click", ".Remove", function () {
+    var removeId = $(this).attr('id')
+    database.ref().child("Characters").child(removeId).remove();
 });
+
 
 // When Load Monster button is clicked
 $("#load-monster").on("click", function(event) {
@@ -154,6 +164,7 @@ $("#load-monster").on("click", function(event) {
     $("form").trigger("reset");
 })
 
+
 // Generate Initiative For Monsters
 function rollInitiative(x){
     var initiativeRoll = Math.floor(Math.random()*20)+1;
@@ -178,10 +189,34 @@ function rollInitiative(x){
     console.log("monster initiative = "+monsterInitiative);
 }
 
-// When Advance Initiative button is clicked
-$("#next-initiative").on("click", function (event) {
+
+// Clock API
+function loadClocks(){
+    // var timeZoneName = "easternStandardTime";
+    var queryURL = "http://worldclockapi.com/api/json/est/now";
+    $.ajax({
+        url: queryURL, method: "GET"
+    }).then(function(response){
+        $("#current-time").append(
+            "<tr>" +
+                "<td>"+ response.timeZoneName +"</td>" +
+                "<td>"+ response.currentDateTime +"</td>" +
+            "<tr>"
+        )
+    })
+    // var timeZoneName = "coordinatedUniversalTime";
+    var queryURL = "http://worldclockapi.com/api/json/utc/now";
+    $.ajax({
+        url: queryURL, method: "GET"
+    }).then(function(response) {
+        $("#current-time").append(
+            "<tr>" +
+                "<td>"+ response.timeZoneName +"</td>" +
+                "<td>"+ response.currentDateTime +"</td>" +
+            "<tr>"
+        )
+    })
+}
 
 
-});
-
-//database.ref("/Characters").child(snapshot).remove();
+loadClocks();
