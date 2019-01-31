@@ -23,11 +23,11 @@
         <div class="row">
             <div class="col-9">
                 <!--TABLE/INITIATIVE TRACKER-->
-                <table class="table">
+                <table class="table" id="combat-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Name</th>
                             <th scope="col">Initiative</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Health Points</th>
                             <th scope="col">Armor Class</th>
                             <th scope="col">Heal</th>
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row border border-black bg-secondary mb-3 p-3">
                     <div class="col">
                         <!--ADD MONSTER FORM(?)-->
                         <!-- Button trigger modal -->
@@ -245,11 +245,25 @@
                         <!--BUTTON TO ADVANCE INITIATIVE ORDER-->
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-warning btn-block mb-5" id="next-initiative">Advance Initiative</button>
+                        <form>
+                            <label for="user-monster">Add A Monster</label>
+                            <input type="text" class="form form-control mb-2" id="user-monster" placeholder="Monster Name">
+                            <label for="how-many">How Many?</label>
+                            <input type="text" class="form form-control mb-3" id="how-many" value="1">
+                            <button type="submit" class="btn btn-warning btn-block mb-2 mx-auto" id="load-monster">Submit</button>
+                        </form>
                     </div>
                 </div>
+                <!-- <div class="row"> -->
+                    <!-- <div class="col"> -->
+                        <!-- BUTTON TO ADVANCE INITIATIVE ORDER-->
+                        <!-- <button type="button" class="btn btn-warning btn-block mb-5" id="next-initiative">Advance Initiative</button> -->
+                    <!-- </div> -->
+                <!-- </div> -->
                 <div class="row">
                     <div class="col">
-                        <!--SPOTIFY PLAYER-->
+                        <!--SORT TABLE INTO INITIATIVE ORDER-->
+                        <button type="button" class="btn btn-warning btn-block mb-5" id="order-initiative">Sort Table</button>
                     </div>
                 </div>
             </div>
