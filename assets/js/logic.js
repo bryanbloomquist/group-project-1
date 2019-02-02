@@ -34,8 +34,8 @@ database.ref().child("Characters").on("child_added", function (snapshot) {
             "<td>" + snapshot.child("ArmorClass").val() + "</td>" +
             "<td>" +
                 "<input class='HealthInput' id=" + snapshot.key + "-HPinput" + " type='number' name='quantity' min='1' max='500'>" +
-                "<button type='button' class='btn btn-success Heal' id=" + snapshot.key + " >Heal</button>" +
-                "<button type='button' class='btn btn-danger Damage' id=" + snapshot.key + " >Damage</button>" +
+                "<button type='button' class='btn btn-success Heal' id=" + snapshot.key + " >+</button>" +
+                "<button type='button' class='btn btn-danger Damage' id=" + snapshot.key + " >-</button>" +
             "</td>" +
             "<td>" +
                 "<button type='button' class='btn btn-dark Remove' id=" + snapshot.key + ">Remove</button>" +
@@ -217,6 +217,7 @@ function rollInitiative(x){
 // Clock API
 function loadClocks(){
     // var timeZoneName = "easternStandardTime";
+
     var queryURL = "http://worldclockapi.com/api/json/est/now";
     $.ajax({
         url: queryURL, method: "GET"
@@ -241,6 +242,5 @@ function loadClocks(){
         )
     })
 }
-
 
 loadClocks();
