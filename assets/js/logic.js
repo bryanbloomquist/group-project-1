@@ -23,11 +23,12 @@ var userMonsterName= "";
 var dexBonus = 0;
 var HPId = "";
 var base = "base";
+var removeId = "blank";
 
 
 database.ref().child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
-        "<tr class='transparent text-dark' id=" + snapshot.child("name").val() + ">" +
+        "<tr class='transparent text-dark' id=" + snapshot.key + "-remove>" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
             "<td>" + snapshot.child("name").val() + "</td>" +
             "<td id=" + snapshot.key + "-HP value=" + snapshot.child("currentHP").val() + ">" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
@@ -50,7 +51,7 @@ database.ref().child("Characters").on("child_added", function (snapshot) {
 
 database.ref().child("Characters").on("child_removed", function (snapshot) {
     event.preventDefault();
-    var removeVar = "#" + snapshot.child("name").val();
+    var removeVar = "#" + removeId + "-remove";
     $(removeVar).remove();
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
@@ -108,7 +109,7 @@ $(document).on("click", "#new-character",function () {
 
 // Remove combatant from table
 $(document).on("click", ".Remove", function () {
-    var removeId = $(this).attr('id')
+    removeId = $(this).attr('id')
     database.ref().child("Characters").child(removeId).remove();
 });
 
