@@ -1,3 +1,12 @@
 .btn {
     margin-left: 5px;
-};
+}
+
+.header, .footer {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    background-color:rgb(82, 99, 48);
+    padding: 30px;
+    font-family: 'Germania One', cursive;
+}
