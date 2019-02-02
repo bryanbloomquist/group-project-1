@@ -25,20 +25,20 @@ var dexBonus = 0;
 
 database.ref().child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
-        "<tr id=" + snapshot.child("name").val() + ">" +
+        "<tr class='transparent text-dark' id=" + snapshot.child("name").val() + ">" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
             "<td>" + snapshot.child("name").val() + "</td>" +
-            "<td>" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
+            "<td id=" + snapshot.key + "-HP value=" + snapshot.child("currentHP").val() + ">" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
             "<td>" + snapshot.child("ArmorClass").val() + "</td>" +
             "<td>" +
-                "<input class='HealthInput' type='number' name='quantity' min='1' max='500'>" +
-                "<button type='button' class='btn btn-success Heal'>Heal</button>" +
-                "<button type='button' class='btn btn-danger Damage'>Damage</button>" +
+                "<input class='HealthInput' id=" + snapshot.key + "-HPinput" + " type='number' name='quantity' min='1' max='500'>" +
+                "<button type='button' class='btn btn-success Heal' id=" + snapshot.key + " >Heal</button>" +
+                "<button type='button' class='btn btn-danger Damage' id=" + snapshot.key + " >Damage</button>" +
             "</td>" +
             "<td>" +
-                "<button type='button' class='btn btn-dark Remove' id="+snapshot.key +">Remove</button>" +
+                "<button type='button' class='btn btn-dark Remove' id=" + snapshot.key + ">Remove</button>" +
             "</td>" +
-        "</tr>"
+        "</tr>"    
     )
     orderCombat();
 }, function (errorObject) {
@@ -59,29 +59,23 @@ database.ref().child("Characters").on("child_removed", function (snapshot) {
 function orderCombat() {
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("combat-table");
-    console.log(table);
     switching = true;
     // make a loop that will continue until no switching has been done
     while (switching) {
         // start by saying no switching is done
         switching = false;
         rows = table.rows;
-        console.log(rows);
         // loop through all table rows (except the first, which containse table headers <th>)
         for (i=1; i<(rows.length-1); i++) {
             // start by saying there should be no switching
             shouldSwitch = false;
             // get the two elements you want to compare, one from current row and one from the next
             x = parseInt(rows[i].cells[0].innerText);
-            console.log("x = "+x);
             y = parseInt(rows[i+1].cells[0].innerText);
-            console.log("y = "+y);
             // check if the two rows should switch place
             if (x < y){
                 // if so, mark as a switch and break the loop
                 shouldSwitch = true;
-                console.log("shouldSwitch = "+shouldSwitch);
-                console.log(switching);
                 break;
             }
         }
@@ -114,6 +108,39 @@ $(document).on("click", "#new-character",function () {
 $(document).on("click", ".Remove", function () {
     var removeId = $(this).attr('id')
     database.ref().child("Characters").child(removeId).remove();
+});
+
+
+// Heal Button
+$(document).on("click", ".Heal", function () {
+    HPId = $(this).attr('id');
+    base = HPId;
+    currentHP = $("#" + HPId + '-HP').attr('value');
+    currentHP = parseInt(currentHP) + parseInt($("#" + HPId + "-HPinput").val());
+    database.ref().child("Characters").child(HPId).update({
+        currentHP: currentHP
+    });
+});
+
+
+// Damage Button
+$(document).on("click", ".Damage", function () {
+    HPId = $(this).attr('id');
+    base = HPId;
+    currentHP = $("#" + HPId + '-HP').attr('value');
+    currentHP = parseInt(currentHP) - parseInt($("#" + HPId + "-HPinput").val());
+    database.ref().child("Characters").child(HPId).update({
+        currentHP: currentHP
+    });
+});
+
+
+// Update HTML on damage or heal
+database.ref().child("Characters").on("value", function (snapshot) {
+    $("#" + HPId + '-HP').text(snapshot.child(base).child("currentHP").val() + "/" + snapshot.child(base).child("maxHealth").val());
+    $("#" + HPId + '-HP').attr("value",snapshot.child(base).child("currentHP").val());
+}, function (errorObject) {
+    console.log("Errors handled: " + errorObject.code);
 });
 
 
