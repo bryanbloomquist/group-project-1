@@ -217,6 +217,7 @@ function rollInitiative(x){
 // Clock API
 function loadClocks(){
     // var timeZoneName = "easternStandardTime";
+
     var queryURL = "http://worldclockapi.com/api/json/est/now";
     $.ajax({
         url: queryURL, method: "GET"
@@ -241,6 +242,5 @@ function loadClocks(){
         )
     })
 }
-
 
 loadClocks();
