@@ -21,6 +21,8 @@ var userMonsterHP = "";
 var userMonsterAC = "";
 var userMonsterName= "";
 var dexBonus = 0;
+var HPId = "";
+var base = "base";
 
 
 database.ref().child("Characters").on("child_added", function (snapshot) {
@@ -137,8 +139,8 @@ $(document).on("click", ".Damage", function () {
 
 // Update HTML on damage or heal
 database.ref().child("Characters").on("value", function (snapshot) {
-    $("#" + HPId + '-HP').text(snapshot.child(base).child("currentHP").val() + "/" + snapshot.child(base).child("maxHealth").val());
-    $("#" + HPId + '-HP').attr("value",snapshot.child(base).child("currentHP").val());
+    $("#" + base + '-HP').text(snapshot.child(base).child("currentHP").val() + "/" + snapshot.child(base).child("maxHealth").val());
+    $("#" + base + '-HP').attr("value",snapshot.child(base).child("currentHP").val());
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });
