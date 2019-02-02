@@ -110,8 +110,49 @@
                     </div>
                 </div>
 
-                <!-- Add Monster -->
-                <div class="row border border-black bg-secondary mb-3 p-3">
+                <div class="row">
+                    <div class="col">
+                    <!-- Add Monster -->
+                        <button type="button" class="btn btn-primary btn-warning btn-block mb-5" data-toggle="modal" data-target="#add-monster-modal">Add Monster</button>
+                    </div>
+                    <div class="modal animate bounceIn" id="add-monster-modal" tabindex="-1" role="dialog" aria-labelledby="add-monster-modal-title" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <!-- Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="add-monster-modal">Add Monster</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- Body -->
+                        <div class="modal-body">
+                            <!-- Name -->
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="user-monster">
+                            </div>
+                            <!-- Initiative Number -->
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">How Many?</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="how-many" value="1">
+                            </div>
+                            <!-- End Buttons -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="load-monster">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- <div class="row border border-black bg-secondary mb-3 p-3">
                     <div class="col">
                         <form>
                             <label for="user-monster">Add A Monster</label>
@@ -121,7 +162,7 @@
                             <button type="submit" class="btn btn-warning btn-block mb-2 mx-auto" id="load-monster">Submit</button>
                         </form>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
