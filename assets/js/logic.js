@@ -159,7 +159,7 @@ $("#load-monster").on("click", function(event) {
         upperCaseMonster = upperCaseMonster + monster + " ";
     }
     upperCaseMonster.trim()
-    var queryURL = "http://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
+    var queryURL = "https://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
     $.ajax({
         url: queryURL, method: "GET"
     }).then(function(response){
