@@ -2,6 +2,16 @@
     margin-left: 5px;
 }
 
+.transparent{
+    background:rgba(255,255,255,0.5);
+}
+
+body {
+    font-family: 'Germania One', cursive;
+    background-image: url("../images/dungeons-dragons-dice-roller-6275.jpg");
+    background-size: cover;
+}
+
 .header, .footer {
     width: 100%;
     display: inline-block;
@@ -9,4 +19,9 @@
     background-color:rgb(82, 99, 48);
     padding: 30px;
     font-family: 'Germania One', cursive;
+}
+
+#combat-table {
+    color:#ffff;
+    font-size:20px;
 }

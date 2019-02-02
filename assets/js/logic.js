@@ -25,7 +25,7 @@ var dexBonus = 0;
 
 database.ref().child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
-        "<tr id=" + snapshot.child("name").val() + ">" +
+        "<tr class='transparent text-dark' id=" + snapshot.child("name").val() + ">" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
             "<td>" + snapshot.child("name").val() + "</td>" +
             "<td id=" + snapshot.key + "-HP value=" + snapshot.child("currentHP").val() + ">" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
