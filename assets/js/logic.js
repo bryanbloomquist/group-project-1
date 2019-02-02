@@ -160,7 +160,7 @@ $("#load-monster").on("click", function(event) {
         upperCaseMonster = upperCaseMonster + monster + " ";
     }
     upperCaseMonster.trim()
-    var queryURL = "http://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
+    var queryURL = "https://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
     $.ajax({
         url: queryURL, method: "GET"
     }).then(function(response){
@@ -213,35 +213,3 @@ function rollInitiative(x){
     monsterInitiative = initiativeRoll;
     console.log("monster initiative = "+monsterInitiative);
 }
-
-
-// Clock API
-function loadClocks(){
-    // var timeZoneName = "easternStandardTime";
-
-    var queryURL = "http://worldclockapi.com/api/json/est/now";
-    $.ajax({
-        url: queryURL, method: "GET"
-    }).then(function(response){
-        $("#current-time").append(
-            "<tr>" +
-                "<td>"+ response.timeZoneName +"</td>" +
-                "<td>"+ response.currentDateTime +"</td>" +
-            "<tr>"
-        )
-    })
-    // var timeZoneName = "coordinatedUniversalTime";
-    var queryURL = "http://worldclockapi.com/api/json/utc/now";
-    $.ajax({
-        url: queryURL, method: "GET"
-    }).then(function(response) {
-        $("#current-time").append(
-            "<tr>" +
-                "<td>"+ response.timeZoneName +"</td>" +
-                "<td>"+ response.currentDateTime +"</td>" +
-            "<tr>"
-        )
-    })
-}
-
-loadClocks();
