@@ -72,9 +72,9 @@ function orderCombat() {
             // start by saying there should be no switching
             shouldSwitch = false;
             // get the two elements you want to compare, one from current row and one from the next
-            x = rows[i].cells[0].innerText;
+            x = parseInt(rows[i].cells[0].innerText);
             console.log("x = "+x);
-            y = rows[i+1].cells[0].innerText;
+            y = parseInt(rows[i+1].cells[0].innerText);
             console.log("y = "+y);
             // check if the two rows should switch place
             if (x < y){
@@ -94,11 +94,6 @@ function orderCombat() {
 }
 
 
-// $("#order-initiative").on("click", function() {
-//     orderCombat();
-// })
-
-
 // When Add Character button is clicked
 $(document).on("click", "#new-character",function () {
     name = $("#name-input").val().trim();
@@ -115,7 +110,7 @@ $(document).on("click", "#new-character",function () {
     });
 });
 
-
+// Remove combatant from table
 $(document).on("click", ".Remove", function () {
     var removeId = $(this).attr('id')
     database.ref().child("Characters").child(removeId).remove();
