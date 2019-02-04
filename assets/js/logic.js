@@ -51,6 +51,7 @@ database.ref().child("Characters").on("child_added", function (snapshot) {
 
 database.ref().child("Characters").on("child_removed", function (snapshot) {
     event.preventDefault();
+    removeId = snapshot.key;
     var removeVar = "#" + removeId + "-remove";
     $(removeVar).remove();
 }, function (errorObject) {
