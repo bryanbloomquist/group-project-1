@@ -33,9 +33,9 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container full-size">
         <div class="row">
-            <div class="col-md-12 col-lg-9">
+            <div class="col-md-12 col-lg-9 mb-1">
                 <!--TABLE/INITIATIVE TRACKER-->
                 <table class="table" id="combat-table">
                     <thead class="thead-dark">
@@ -58,7 +58,7 @@
                 <div class="row">
                     <div class="col">
                         <!-- Add New Character Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-warning btn-block mb-2 border-white" data-toggle="modal" data-target="#exampleModalCenter">Add New Character</button>
+                        <button type="button" class="btn btn-primary btn-warning btn-block mx-0 mb-2 border-white" data-toggle="modal" data-target="#exampleModalCenter">Add New Character</button>
                     </div>
                     <div class="modal animate bounceIn" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -76,13 +76,13 @@
                                         <label for="name-input">Character Name</label>
                                         <input type="text" class="form form-control mb-2" id="name-input" placeholder="Name on top of Character Sheet">
                                         <label for="InitiativeNumber-input">Initiative Roll</label>
-                                        <input type="text" class="form form-control mb-3" id="InitiativeNumber-input" placeholder="d20 + Initiative Modifier">
+                                        <input type="number" name="quantity" min="0" max="50" class="form form-control mb-3" id="InitiativeNumber-input" placeholder="d20 + Initiative Modifier">
                                         <label for="maxHealth-input">Max Health</label>
-                                        <input type="text" class="form form-control mb-3" id="maxHealth-input" placeholder="Max HP">
+                                        <input type="number" name="quantity" min="0" max="500" class="form form-control mb-3" id="maxHealth-input" placeholder="Max HP">
                                         <label for="currentHP-input">Current Health</label>
-                                        <input type="text" class="form form-control mb-3" id="currentHealth-input" placeholder="Max HP - Damage Taken">
+                                        <input type="number" name="quantity" min="0" max="500" class="form form-control mb-3" id="currentHealth-input" placeholder="Max HP - Damage Taken">
                                         <label for="ArmorClass-input">Armor Class</label>
-                                        <input type="text" class="form form-control mb-3" id="ArmorClass-input" placeholder="AC">
+                                        <input type="number" name="quantity" min="0" max="50" class="form form-control mb-3" id="ArmorClass-input" placeholder="AC">
                                     </form>
                                 </div>
                                 <!-- End Buttons -->
@@ -98,7 +98,7 @@
                 <div class="row">
                     <div class="col">
                     <!-- Add Monster -->
-                        <button type="button" class="btn btn-primary btn-warning btn-block mb-2 border-white" data-toggle="modal" data-target="#add-monster-modal">Add Monster</button>
+                        <button type="button" class="btn btn-primary btn-warning btn-block mx-0 mb-2 border-white" data-toggle="modal" data-target="#add-monster-modal">Add Monster</button>
                     </div>
                     <div class="modal animate bounceIn" id="add-monster-modal" tabindex="-1" role="dialog" aria-labelledby="add-monster-modal-title" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -116,7 +116,7 @@
                                         <label for="user-monster">Add A Monster</label>
                                         <input type="text" class="form form-control mb-2" id="user-monster" placeholder="Monster Name">
                                         <label for="how-many">How Many?</label>
-                                        <input type="text" class="form form-control mb-3" id="how-many" value="1">
+                                        <input type="number" name="quantity" min="1" max="50" class="form form-control mb-3" id="how-many" value="1">
                                     </form>
                                     <!-- End Buttons -->
                                     <div class="modal-footer">
@@ -130,25 +130,25 @@
                 </div>
 
                 <!-- Roll Dice -->
-                <div class="row border border-black bg-secondary mb-2 p-2">
+                <div class="row border border-black mx-0 mb-2 p-2 transparent">
                     <div class="col">
                         <form>
                             <div class="form-group row">
                                 <label for="number-of-dice" class="col-8">How Many Dice?</label>
                                 <div class="col-4">
-                                    <input type="text" class="form form-control" id="number-of-dice" value="1">                                
+                                    <input type="number" name="quantity" min="1" max="50" class="form form-control" id="number-of-dice" value="1">                                
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="number-of-sides" class="col-8">How Many Sides?</label>
                                 <div class="col-4">
-                                    <input type="text" class="form form-control" id="number-of-sides" value="4">                                
+                                    <input type="number" name="quantity" min="1" max="100" class="form form-control" id="number-of-sides" value="4">                                
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="dice-modifier" class="col-8">Is There A Modifier?</label>
                                 <div class="col-4">
-                                    <input type="text" class="form form-control" id="dice-modifier" value="0">                                
+                                    <input type="number" name="quantity" min="-50" max="50" class="form form-control" id="dice-modifier" value="0">                                
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-warning btn-block mb-2 mx-auto" id="roll-dice">Roll Dice</button>
