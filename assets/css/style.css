@@ -30,7 +30,8 @@ body {
     padding:50px;
     background-image:url("../images/corrodedMetalPic.jpg");
     background-repeat: no-repeat;
-    background-size:cover; 
+    background-size:cover;
+    box-shadow: inset 0 0 30px #000000;
 }
 
 .footer {
@@ -39,6 +40,7 @@ body {
     background-color:rgb(82, 99, 48);
     color: rgba(0,0,0,0.6);
     text-shadow: 2px 2px 2px rgba(235, 240, 234, 0.5);
+    box-shadow: inset 0 0 15px #000000;
 }
 
 #combat-table {
