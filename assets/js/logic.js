@@ -125,6 +125,7 @@ $(document).on("click", ".Heal", function () {
     base = HPId;
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) + parseInt($("#" + HPId + "-HPinput").val());
+    $("#" + HPId + "-HPinput").val("");
     database.ref().child("Characters").child(HPId).update({
         currentHP: currentHP
     });
@@ -137,6 +138,7 @@ $(document).on("click", ".Damage", function () {
     base = HPId;
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) - parseInt($("#" + HPId + "-HPinput").val());
+    $("#" + HPId + "-HPinput").val("");
     database.ref().child("Characters").child(HPId).update({
         currentHP: currentHP
     });
@@ -165,7 +167,7 @@ $("#load-monster").on("click", function(event) {
         upperCaseMonster = upperCaseMonster + monster + " ";
     }
     upperCaseMonster.trim()
-    var queryURL = "http://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
+    var queryURL = "https://frozen-ridge-34491.herokuapp.com/api/monsters/?name="+upperCaseMonster;
     $.ajax({
         url: queryURL, method: "GET"
     }).then(function(response){

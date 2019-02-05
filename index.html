@@ -47,34 +47,6 @@
 
             <div class="col-md-12 col-lg-3">
 
-                <!-- Roll Dice -->
-                <div class="row border border-black bg-secondary mb-2 p-2">
-                    <div class="col">
-                        <form>
-                            <div class="form-group row">
-                                <label for="number-of-dice" class="col-8">How Many Dice?</label>
-                                <div class="col-4">
-                                    <input type="text" class="form form-control" id="number-of-dice" value="1">                                
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="number-of-sides" class="col-8">How Many Sides?</label>
-                                <div class="col-4">
-                                    <input type="text" class="form form-control" id="number-of-sides" value="4">                                
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="dice-modifier" class="col-8">Is There A Modifier?</label>
-                                <div class="col-4">
-                                    <input type="text" class="form form-control" id="dice-modifier" value="0">                                
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-warning btn-block mb-2 mx-auto" id="roll-dice">Roll Dice</button>
-                        </form>
-                        <span id="dice-results" class="m-3 bg-white text-center"></span>
-                    </div>
-                </div>
-                
                 <div class="row">
                     <div class="col">
                         <!-- Add New Character Button trigger modal -->
@@ -114,38 +86,73 @@
                         </div>
                     </div>
                 </div>
-
+        
                 <div class="row">
                     <div class="col">
                     <!-- Add Monster -->
                         <button type="button" class="btn btn-primary btn-warning btn-block mb-2 border-white" data-toggle="modal" data-target="#add-monster-modal">Add Monster</button>
                     </div>
                     <div class="modal animate bounceIn" id="add-monster-modal" tabindex="-1" role="dialog" aria-labelledby="add-monster-modal-title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <!-- Header -->
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="add-monster-modal">Add Monster</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <!-- Body -->
-                        <div class="modal-body">
-                            <form>
-                                <label for="user-monster">Add A Monster</label>
-                                <input type="text" class="form form-control mb-2" id="user-monster" placeholder="Monster Name">
-                                <label for="how-many">How Many?</label>
-                                <input type="text" class="form form-control mb-3" id="how-many" value="1">
-                            </form>
-                            <!-- End Buttons -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-warning" data-dismiss="modal" id="load-monster">Save changes</button>
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <!-- Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="add-monster-modal">Add Monster</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!-- Body -->
+                                <div class="modal-body">
+                                    <form>
+                                        <label for="user-monster">Add A Monster</label>
+                                        <input type="text" class="form form-control mb-2" id="user-monster" placeholder="Monster Name">
+                                        <label for="how-many">How Many?</label>
+                                        <input type="text" class="form form-control mb-3" id="how-many" value="1">
+                                    </form>
+                                    <!-- End Buttons -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal" id="load-monster">Save changes</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Roll Dice -->
+                <div class="row border border-black bg-secondary mb-2 p-2">
+                    <div class="col">
+                        <form>
+                            <div class="form-group row">
+                                <label for="number-of-dice" class="col-8">How Many Dice?</label>
+                                <div class="col-4">
+                                    <input type="text" class="form form-control" id="number-of-dice" value="1">                                
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="number-of-sides" class="col-8">How Many Sides?</label>
+                                <div class="col-4">
+                                    <input type="text" class="form form-control" id="number-of-sides" value="4">                                
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="dice-modifier" class="col-8">Is There A Modifier?</label>
+                                <div class="col-4">
+                                    <input type="text" class="form form-control" id="dice-modifier" value="0">                                
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block mb-2 mx-auto" id="roll-dice">Roll Dice</button>
+                        </form>
+                        <div class="row">
+                            <div class="col m-3 p-2 bg-white text-center" id="dice-tray">
+                                <span id="dice-results"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>

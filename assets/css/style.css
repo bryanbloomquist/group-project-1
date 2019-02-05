@@ -27,6 +27,10 @@ body {
     font-size:20px;
 }
 
+#dice-tray {
+    height: 100px;
+}
+
 /* unvisited link */
 a:link {
     color:#333;
