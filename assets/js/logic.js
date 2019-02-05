@@ -244,3 +244,33 @@ function loadClocks(){
 
 
 loadClocks();
+
+    var randomDate = currentDateTime;
+    var randomFormat = "MM/DD/YYYY";
+    var convertedDate = moment(randomDate, randomFormat);
+
+    console.log(moment().format("MMM Do, YYYY hh:mm:ss"));
+   
+    console.log(convertedDate.format("MMM Do, YYYY hh:mm:ss"));
+    console.log(convertedDate.format("X"));
+    console.log("----------------------------------------");
+
+    // 2 ...to determine the time in years, months, days between today and the randomDate
+    console.log(convertedDate.toNow());
+    console.log(convertedDate.format("MMM Do, YYYY hh:mm:ss"));
+    console.log(convertedDate.diff(moment(), "years"));
+    console.log(convertedDate.diff(moment(), "months"));
+    console.log(convertedDate.diff(moment(), "days"));
+    console.log("----------------------------------------");
+
+    // 3 ...to determine the number of days between the randomDate and 02/14/2001
+    var newDate = moment("02/14/2001", randomFormat);
+    console.log(convertedDate.diff(newDate, "days"));
+
+    // 4 ...to convert the randomDate to unix time (be sure to look up what unix time even is!!!)
+    console.log(convertedDate.format("X"));
+    console.log("----------------------------------------");
+
+    // 5 ...to determine what day of the week and what week of the year this randomDate falls on.
+    console.log(convertedDate.format("DDD"));
+    console.log(convertedDate.format("dddd"));
