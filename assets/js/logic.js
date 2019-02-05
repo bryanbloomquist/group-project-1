@@ -178,9 +178,7 @@ $("#load-monster").on("click", function(event) {
             userMonsterHP = response.hit_points;
             userMonsterAC = response.armor_class;
             userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
-            console.log(results, userMonsterName);
             userMonsterDex = response.dexterity;
-            console.log("dexterity = "+userMonsterDex);
             rollInitiative(userMonsterDex);
             var i;
             for (i=0; i<quantity; i++){
@@ -225,6 +223,9 @@ function rollInitiative(x){
 // Roll Dice
 $("#roll-dice").on("click", function(event) {
     event.preventDefault();
+    var audio = document.createElement("audio");
+    audio.setAttribute("src", "assets/sounds/diceroll.wav");
+    audio.play();
     var numberOfDice=$("#number-of-dice").val().trim();
     var numberOfSides=$("#number-of-sides").val().trim();
     var diceModifier=$("#dice-modifier").val().trim();
