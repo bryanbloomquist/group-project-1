@@ -178,9 +178,7 @@ $("#load-monster").on("click", function(event) {
             userMonsterHP = response.hit_points;
             userMonsterAC = response.armor_class;
             userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
-            console.log(results, userMonsterName);
             userMonsterDex = response.dexterity;
-            console.log("dexterity = "+userMonsterDex);
             rollInitiative(userMonsterDex);
             var i;
             for (i=0; i<quantity; i++){
