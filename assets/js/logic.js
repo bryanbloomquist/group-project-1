@@ -160,46 +160,71 @@ $("#load-monster").on("click", function(event) {
     var monster=$("#user-monster").val().trim();
     var quantity=$("#how-many").val().trim();
     var upperCaseMonster = "";
+    // Adds monster name to array to convert it to proper format
     var monsterWords = monster.split(" ");
     for(var i = 0; i<monsterWords.length;i++) {
         var monster = monsterWords[i];
-        monster = monster.charAt(0).toUpperCase()+monster.slice(1);
+        // Converts all letters in name to lower case
+        var lowerCaseMonster = monster.toLowerCase();
+        // Capitalizes the first letter of each name
+        monster = lowerCaseMonster.charAt(0).toUpperCase()+lowerCaseMonster.slice(1);
         upperCaseMonster = upperCaseMonster + monster + " ";
     }
     upperCaseMonster.trim()
     var queryURL = "https://frozen-ridge-34491.herokuapp.com/api/monsters/?name="+upperCaseMonster;
     $.ajax({
-        url: queryURL, method: "GET"
+        url: queryURL,   
+        method: "GET",
     }).then(function(response){
-        var results = response.results[0].url;
-        $.ajax({
-            url: results, method: "GET"
-        }).then(function(response){
-            userMonsterHP = response.hit_points;
-            userMonsterAC = response.armor_class;
-            userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
-            userMonsterDex = response.dexterity;
-            rollInitiative(userMonsterDex);
-            var i;
-            for (i=0; i<quantity; i++){
-                database.ref().child("Characters").push({
-                    ArmorClass: userMonsterAC,
-                    InitiativeNumber: monsterInitiative,
-                    currentHP: userMonsterHP,
-                    maxHealth: userMonsterHP,
-                    name: userMonsterName
-                })
-            }
-        })
+        // Checks to see if ajax query comes back with result
+        if (response.results.length===0){
+            noSuchMonster();
+        } else {
+            isSuchMonster();
+            var results = response.results[0].url;
+            $.ajax({
+                url: results, 
+                method: "GET"
+            }).then(function(response){
+                userMonsterHP = response.hit_points;
+                userMonsterAC = response.armor_class;
+                userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
+                userMonsterDex = response.dexterity;
+                rollInitiative(userMonsterDex);
+                var i;
+                for (i=0; i<quantity; i++){
+                    database.ref().child("Characters").push({
+                        ArmorClass: userMonsterAC,
+                        InitiativeNumber: monsterInitiative,
+                        currentHP: userMonsterHP,
+                        maxHealth: userMonsterHP,
+                        name: userMonsterName
+                    })
+                }
+            })
+        }
     })
     $("form").trigger("reset");
 })
 
 
+// If ajax call comes back empty
+function noSuchMonster(){
+    $("#not-on-file").html("<p class='transparent p-2'>Please Check Your Spelling, Otherwise This Monster Is Not In The SRD");
+}
+
+
+//If ajax call comes back valid
+function isSuchMonster(){
+    $("#not-on-file").html("");
+}
+
+
 // Generate Initiative For Monsters
 function rollInitiative(x){
+    // Roll a d20 for initiative
     var initiativeRoll = Math.floor(Math.random()*20)+1;
-    console.log("Initiative Roll = "+initiativeRoll);
+    // add monsters dex bonus
     if (x === 1){initiativeRoll-=5}
     else if (x > 2 && x < 4){initiativeRoll-=4}
     else if (x > 3 && x < 6){initiativeRoll-=3}
@@ -217,7 +242,6 @@ function rollInitiative(x){
     else if (x > 27 && x < 30){initiativeRoll+=9}
     else if (x === 30){initiativeRoll+=10}
     monsterInitiative = initiativeRoll;
-    console.log("monster initiative = "+monsterInitiative);
 }
 
 // Roll Dice
