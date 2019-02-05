@@ -23,19 +23,21 @@ var userMonsterName= "";
 var dexBonus = 0;
 var HPId = "";
 var base = "base";
+var removeId = "blank";
 
 
+// Fill table with elements from the firebase
 database.ref().child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
-        "<tr class='transparent text-dark' id=" + snapshot.child("name").val() + ">" +
+        "<tr class='transparent text-dark animate flipOutX' id=" + snapshot.key + "-remove>" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
             "<td>" + snapshot.child("name").val() + "</td>" +
             "<td id=" + snapshot.key + "-HP value=" + snapshot.child("currentHP").val() + ">" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
             "<td>" + snapshot.child("ArmorClass").val() + "</td>" +
             "<td>" +
                 "<input class='HealthInput' id=" + snapshot.key + "-HPinput" + " type='number' name='quantity' min='1' max='500'>" +
-                "<button type='button' class='btn btn-success Heal' id=" + snapshot.key + " >Heal</button>" +
-                "<button type='button' class='btn btn-danger Damage' id=" + snapshot.key + " >Damage</button>" +
+                "<button type='button' class='btn btn-success Heal' id=" + snapshot.key + " >+</button>" +
+                "<button type='button' class='btn btn-danger Damage' id=" + snapshot.key + " >-</button>" +
             "</td>" +
             "<td>" +
                 "<button type='button' class='btn btn-dark Remove' id=" + snapshot.key + ">Remove</button>" +
@@ -48,9 +50,11 @@ database.ref().child("Characters").on("child_added", function (snapshot) {
 });
 
 
+//  Remove combatant from firebase
 database.ref().child("Characters").on("child_removed", function (snapshot) {
     event.preventDefault();
-    var removeVar = "#" + snapshot.child("name").val();
+    removeId = snapshot.key;
+    var removeVar = "#" + removeId + "-remove";
     $(removeVar).remove();
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
@@ -67,11 +71,11 @@ function orderCombat() {
         // start by saying no switching is done
         switching = false;
         rows = table.rows;
-        // loop through all table rows (except the first, which containse table headers <th>)
+        // loop through all table rows (except the first, which contains table headers <th>)
         for (i=1; i<(rows.length-1); i++) {
             // start by saying there should be no switching
             shouldSwitch = false;
-            // get the two elements you want to compare, one from current row and one from the next
+            // get the two elements as integers you want to compare, one from current row and one from the next
             x = parseInt(rows[i].cells[0].innerText);
             y = parseInt(rows[i+1].cells[0].innerText);
             // check if the two rows should switch place
@@ -94,7 +98,7 @@ function orderCombat() {
 $(document).on("click", "#new-character",function () {
     name = $("#name-input").val().trim();
     maxHealth = $("#maxHealth-input").val().trim();
-    currentHP = $("#currentHP-input").val().trim();
+    currentHP = $("#currentHealth-input").val().trim();
     ArmorClass = $("#ArmorClass-input").val().trim();
     InitiativeNumber = $("#InitiativeNumber-input").val().trim();
     database.ref().child("Characters").push({
@@ -104,11 +108,13 @@ $(document).on("click", "#new-character",function () {
         ArmorClass: ArmorClass,
         InitiativeNumber: InitiativeNumber
     });
+    $("form").trigger("reset");
 });
+
 
 // Remove combatant from table
 $(document).on("click", ".Remove", function () {
-    var removeId = $(this).attr('id')
+    removeId = $(this).attr('id')
     database.ref().child("Characters").child(removeId).remove();
 });
 
@@ -119,6 +125,7 @@ $(document).on("click", ".Heal", function () {
     base = HPId;
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) + parseInt($("#" + HPId + "-HPinput").val());
+    $("#" + HPId + "-HPinput").val("");
     database.ref().child("Characters").child(HPId).update({
         currentHP: currentHP
     });
@@ -131,6 +138,7 @@ $(document).on("click", ".Damage", function () {
     base = HPId;
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) - parseInt($("#" + HPId + "-HPinput").val());
+    $("#" + HPId + "-HPinput").val("");
     database.ref().child("Characters").child(HPId).update({
         currentHP: currentHP
     });
@@ -159,7 +167,7 @@ $("#load-monster").on("click", function(event) {
         upperCaseMonster = upperCaseMonster + monster + " ";
     }
     upperCaseMonster.trim()
-    var queryURL = "http://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
+    var queryURL = "https://frozen-ridge-34491.herokuapp.com/api/monsters/?name="+upperCaseMonster;
     $.ajax({
         url: queryURL, method: "GET"
     }).then(function(response){
@@ -169,7 +177,8 @@ $("#load-monster").on("click", function(event) {
         }).then(function(response){
             userMonsterHP = response.hit_points;
             userMonsterAC = response.armor_class;
-            userMonsterName = response.name;
+            userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
+            console.log(results, userMonsterName);
             userMonsterDex = response.dexterity;
             console.log("dexterity = "+userMonsterDex);
             rollInitiative(userMonsterDex);
@@ -213,64 +222,23 @@ function rollInitiative(x){
     console.log("monster initiative = "+monsterInitiative);
 }
 
-
-// Clock API
-function loadClocks(){
-    // var timeZoneName = "easternStandardTime";
-    var queryURL = "http://worldclockapi.com/api/json/est/now";
+// Roll Dice
+$("#roll-dice").on("click", function(event) {
+    event.preventDefault();
+    var numberOfDice=$("#number-of-dice").val().trim();
+    var numberOfSides=$("#number-of-sides").val().trim();
+    var diceModifier=$("#dice-modifier").val().trim();
+    var queryURL = "https://rolz.org/api/?"+numberOfDice+"d"+numberOfSides+".json";
     $.ajax({
         url: queryURL, method: "GET"
     }).then(function(response){
-        $("#current-time").append(
-            "<tr>" +
-                "<td>"+ response.timeZoneName +"</td>" +
-                "<td>"+ response.currentDateTime +"</td>" +
-            "<tr>"
+        var illustration = response.illustration;
+        var result = response.result;
+        var rolls = response.details;
+        var total = parseInt(result)+parseInt(diceModifier);
+        $("#dice-results").html(
+            "<p>"+illustration+" + "+diceModifier+"</p>" +
+            "<p>"+rolls+" + "+diceModifier+" = "+total+"</p>"
         )
     })
-    // var timeZoneName = "coordinatedUniversalTime";
-    var queryURL = "http://worldclockapi.com/api/json/utc/now";
-    $.ajax({
-        url: queryURL, method: "GET"
-    }).then(function(response) {
-        $("#current-time").append(
-            "<tr>" +
-                "<td>"+ response.timeZoneName +"</td>" +
-                "<td>"+ response.currentDateTime +"</td>" +
-            "<tr>"
-        )
-    })
-}
-
-
-loadClocks();
-
-    var randomDate = currentDateTime;
-    var randomFormat = "MM/DD/YYYY";
-    var convertedDate = moment(randomDate, randomFormat);
-
-    console.log(moment().format("MMM Do, YYYY hh:mm:ss"));
-   
-    console.log(convertedDate.format("MMM Do, YYYY hh:mm:ss"));
-    console.log(convertedDate.format("X"));
-    console.log("----------------------------------------");
-
-    // 2 ...to determine the time in years, months, days between today and the randomDate
-    console.log(convertedDate.toNow());
-    console.log(convertedDate.format("MMM Do, YYYY hh:mm:ss"));
-    console.log(convertedDate.diff(moment(), "years"));
-    console.log(convertedDate.diff(moment(), "months"));
-    console.log(convertedDate.diff(moment(), "days"));
-    console.log("----------------------------------------");
-
-    // 3 ...to determine the number of days between the randomDate and 02/14/2001
-    var newDate = moment("02/14/2001", randomFormat);
-    console.log(convertedDate.diff(newDate, "days"));
-
-    // 4 ...to convert the randomDate to unix time (be sure to look up what unix time even is!!!)
-    console.log(convertedDate.format("X"));
-    console.log("----------------------------------------");
-
-    // 5 ...to determine what day of the week and what week of the year this randomDate falls on.
-    console.log(convertedDate.format("DDD"));
-    console.log(convertedDate.format("dddd"));
+})

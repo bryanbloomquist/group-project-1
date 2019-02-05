@@ -10,7 +10,7 @@ body {
     font-family: 'Germania One', cursive;
     background-image: url("../images/dungeons-dragons-dice-roller-6275.jpg");
     background-repeat: no-repeat;
-    background-size:cover;
+    background-size: cover;
 }
 
 
@@ -45,6 +45,26 @@ body {
     font-size:20px;
 }
 
-.transparent{
-    background:rgba(255,255,255,0.5);
-  }
+#dice-tray {
+    height: 100px;
+}
+
+/* unvisited link */
+a:link {
+    color:#333;
+}
+
+/* visited link */
+a:visited {
+    color:#333;
+}
+
+/* mouse over link */
+a:hover {
+    color:#000;
+}
+
+/* selected link */
+a:active {
+    color:#333;
+}
