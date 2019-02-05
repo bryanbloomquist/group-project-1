@@ -225,6 +225,9 @@ function rollInitiative(x){
 // Roll Dice
 $("#roll-dice").on("click", function(event) {
     event.preventDefault();
+    var audio = document.createElement("audio");
+    audio.setAttribute("src", "assets/sounds/diceroll.wav");
+    audio.play();
     var numberOfDice=$("#number-of-dice").val().trim();
     var numberOfSides=$("#number-of-sides").val().trim();
     var diceModifier=$("#dice-modifier").val().trim();
