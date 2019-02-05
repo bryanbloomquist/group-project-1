@@ -26,9 +26,10 @@ var base = "base";
 var removeId = "blank";
 
 
+// Fill table with elements from the firebase
 database.ref().child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
-        "<tr class='transparent text-dark' id=" + snapshot.key + "-remove>" +
+        "<tr class='transparent text-dark animate flipOutX' id=" + snapshot.key + "-remove>" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
             "<td>" + snapshot.child("name").val() + "</td>" +
             "<td id=" + snapshot.key + "-HP value=" + snapshot.child("currentHP").val() + ">" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
@@ -49,6 +50,7 @@ database.ref().child("Characters").on("child_added", function (snapshot) {
 });
 
 
+//  Remove combatant from firebase
 database.ref().child("Characters").on("child_removed", function (snapshot) {
     event.preventDefault();
     removeId = snapshot.key;
@@ -69,11 +71,11 @@ function orderCombat() {
         // start by saying no switching is done
         switching = false;
         rows = table.rows;
-        // loop through all table rows (except the first, which containse table headers <th>)
+        // loop through all table rows (except the first, which contains table headers <th>)
         for (i=1; i<(rows.length-1); i++) {
             // start by saying there should be no switching
             shouldSwitch = false;
-            // get the two elements you want to compare, one from current row and one from the next
+            // get the two elements as integers you want to compare, one from current row and one from the next
             x = parseInt(rows[i].cells[0].innerText);
             y = parseInt(rows[i+1].cells[0].innerText);
             // check if the two rows should switch place
@@ -96,7 +98,7 @@ function orderCombat() {
 $(document).on("click", "#new-character",function () {
     name = $("#name-input").val().trim();
     maxHealth = $("#maxHealth-input").val().trim();
-    currentHP = $("#currentHP-input").val().trim();
+    currentHP = $("#currentHealth-input").val().trim();
     ArmorClass = $("#ArmorClass-input").val().trim();
     InitiativeNumber = $("#InitiativeNumber-input").val().trim();
     database.ref().child("Characters").push({
@@ -106,7 +108,9 @@ $(document).on("click", "#new-character",function () {
         ArmorClass: ArmorClass,
         InitiativeNumber: InitiativeNumber
     });
+    $("form").trigger("reset");
 });
+
 
 // Remove combatant from table
 $(document).on("click", ".Remove", function () {
@@ -121,6 +125,7 @@ $(document).on("click", ".Heal", function () {
     base = HPId;
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) + parseInt($("#" + HPId + "-HPinput").val());
+    $("#" + HPId + "-HPinput").val("");
     database.ref().child("Characters").child(HPId).update({
         currentHP: currentHP
     });
@@ -133,6 +138,7 @@ $(document).on("click", ".Damage", function () {
     base = HPId;
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) - parseInt($("#" + HPId + "-HPinput").val());
+    $("#" + HPId + "-HPinput").val("");
     database.ref().child("Characters").child(HPId).update({
         currentHP: currentHP
     });
@@ -161,7 +167,7 @@ $("#load-monster").on("click", function(event) {
         upperCaseMonster = upperCaseMonster + monster + " ";
     }
     upperCaseMonster.trim()
-    var queryURL = "http://www.dnd5eapi.co/api/monsters/?name="+upperCaseMonster;
+    var queryURL = "https://frozen-ridge-34491.herokuapp.com/api/monsters/?name="+upperCaseMonster;
     $.ajax({
         url: queryURL, method: "GET"
     }).then(function(response){
@@ -171,7 +177,8 @@ $("#load-monster").on("click", function(event) {
         }).then(function(response){
             userMonsterHP = response.hit_points;
             userMonsterAC = response.armor_class;
-            userMonsterName = response.name;
+            userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
+            console.log(results, userMonsterName);
             userMonsterDex = response.dexterity;
             console.log("dexterity = "+userMonsterDex);
             rollInitiative(userMonsterDex);
@@ -214,3 +221,24 @@ function rollInitiative(x){
     monsterInitiative = initiativeRoll;
     console.log("monster initiative = "+monsterInitiative);
 }
+
+// Roll Dice
+$("#roll-dice").on("click", function(event) {
+    event.preventDefault();
+    var numberOfDice=$("#number-of-dice").val().trim();
+    var numberOfSides=$("#number-of-sides").val().trim();
+    var diceModifier=$("#dice-modifier").val().trim();
+    var queryURL = "https://rolz.org/api/?"+numberOfDice+"d"+numberOfSides+".json";
+    $.ajax({
+        url: queryURL, method: "GET"
+    }).then(function(response){
+        var illustration = response.illustration;
+        var result = response.result;
+        var rolls = response.details;
+        var total = parseInt(result)+parseInt(diceModifier);
+        $("#dice-results").html(
+            "<p>"+illustration+" + "+diceModifier+"</p>" +
+            "<p>"+rolls+" + "+diceModifier+" = "+total+"</p>"
+        )
+    })
+})
