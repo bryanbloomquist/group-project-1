@@ -37,7 +37,7 @@ body {
     padding:20px;
     background-color:rgb(82, 99, 48);
     color: rgba(0,0,0,0.6);
-    text-shadow: -2px -2px 2px rgba(235, 240, 234, 0.9);
+    text-shadow: 2px 2px 2px rgba(235, 240, 234, 0.5);
 }
 
 #combat-table {
