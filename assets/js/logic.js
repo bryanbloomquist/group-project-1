@@ -29,7 +29,7 @@ var removeId = "blank";
 // Fill table with elements from the firebase
 database.ref().child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
-        "<tr class='transparent text-dark animate flipOutX' id=" + snapshot.key + "-remove>" +
+        "<tr class='transparent text-dark animated flipInX' id=" + snapshot.key + "-remove>" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
             "<td>" + snapshot.child("name").val() + "</td>" +
             "<td id=" + snapshot.key + "-HP value=" + snapshot.child("currentHP").val() + ">" + snapshot.child("currentHP").val() + " / " + snapshot.child("maxHealth").val() + "</td>" +
@@ -188,7 +188,8 @@ $("#load-monster").on("click", function(event) {
             }).then(function(response){
                 userMonsterHP = response.hit_points;
                 userMonsterAC = response.armor_class;
-                userMonsterName = "<a href='"+results+"' target='_blank'>"+response.name+"</a>";
+                userMonsterURL = "<a href='"+results+"' target='_blank'>[?]</a>";
+                userMonsterName = response.name + userMonsterURL;
                 userMonsterDex = response.dexterity;
                 rollInitiative(userMonsterDex);
                 var i;
@@ -198,7 +199,8 @@ $("#load-monster").on("click", function(event) {
                         InitiativeNumber: monsterInitiative,
                         currentHP: userMonsterHP,
                         maxHealth: userMonsterHP,
-                        name: userMonsterName
+                        name: userMonsterName,
+                        URL: userMonsterURL
                     })
                 }
             })
@@ -210,7 +212,10 @@ $("#load-monster").on("click", function(event) {
 
 // If ajax call comes back empty
 function noSuchMonster(){
-    $("#not-on-file").html("<p class='transparent p-2'>Please Check Your Spelling, Otherwise This Monster Is Not In The SRD");
+    var audio = document.createElement("audio");
+    audio.setAttribute("src", "assets/sounds/error.flac");
+    audio.play();
+    $("#not-on-file").html("<p class='transparent p-2 animated fadeInDownBig'>Please Check Your Spelling, Otherwise This Monster Is Not In The SRD");
 }
 
 
