@@ -14,7 +14,16 @@ body {
     background-attachment: fixed;
 }
 
+.login {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
 
+.full-size {
+    min-height: 80vh;
+}
 
 .header, .footer {
     width: 100%;

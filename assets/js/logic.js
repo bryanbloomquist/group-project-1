@@ -24,10 +24,86 @@ var dexBonus = 0;
 var HPId = "";
 var base = "base";
 var removeId = "blank";
+var loggedIn = "false";
+var email = "";
+var pass= "";
+var storedEmail = localStorage.getItem("email");
+var user = storedEmail.substring(0, storedEmail.lastIndexOf("@"));;
+
+
+// Set constants
+var auth = firebase.auth();
+
+
+// Register with username and password
+$(document).on("click", "#btnSignUp", function (event) {
+    event.preventDefault();
+    email = $("#new-user-email").val().trim();
+    user = email.substring(0, email.lastIndexOf("@"));
+    pass = $("#new-user-password").val().trim();
+    localStorage.setItem("email", email);
+    localStorage.setItem("user", user);
+    localStorage.setItem("pass", pass);
+    firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
+        console.log(error.message);
+    });
+    loggedIn = true;
+    if (loggedIn === true) {
+        moveToTracker();
+    }
+    console.log(email, pass);
+})
+
+
+// Sign in with username and password
+$(document).on("click", "#btnLogin", function (event) {
+    event.preventDefault();
+    email = $("#old-user-email").val().trim();
+    user = email.substring(0, email.lastIndexOf("@"));
+    pass = $("#old-user-password").val().trim();
+    localStorage.setItem("email", email);
+    localStorage.setItem("user", user);
+    localStorage.setItem("pass", pass);
+    var promise = firebase.auth().signInWithEmailAndPassword(email, pass);
+    loggedIn = true;
+    if (loggedIn === true) {
+        moveToTracker();
+    }
+        console.log(email, pass, promise);
+    promise.catch(e=>{ console.log(e.massage)})
+})
+
+
+// Move to tracker.html after logging in 
+function moveToTracker(){
+    setTimeout(function(){
+        window.location.href="tracker.html";
+    }, 500);
+}
+
+
+//Logging Out
+$(document).on("click", "#btnLogOut", function (event) {
+    event.preventDefault();
+    firebase.auth().signOut();
+    loggedIn = false;
+    if (loggedIn === false) {
+        moveToIndex();
+    }
+    console.log('logged out')
+})
+
+
+// Move to index.html after loggin out
+function moveToIndex(){
+    setTimeout(function(){
+        window.location.href="index.html";
+    }, 500);
+}
 
 
 // Fill table with elements from the firebase
-database.ref().child("Characters").on("child_added", function (snapshot) {
+database.ref(`users/${user}`).child("Characters").on("child_added", function (snapshot) {
     $("#combat-tracker").append(
         "<tr class='transparent text-dark animated flipInX' id=" + snapshot.key + "-remove>" +
             "<td>" + snapshot.child("InitiativeNumber").val() + "</td>" +
@@ -51,7 +127,7 @@ database.ref().child("Characters").on("child_added", function (snapshot) {
 
 
 //  Remove combatant from firebase
-database.ref().child("Characters").on("child_removed", function (snapshot) {
+database.ref(`users/${user}`).child("Characters").on("child_removed", function (snapshot) {
     event.preventDefault();
     removeId = snapshot.key;
     var removeVar = "#" + removeId + "-remove";
@@ -101,7 +177,7 @@ $(document).on("click", "#new-character",function () {
     currentHP = $("#currentHealth-input").val().trim();
     ArmorClass = $("#ArmorClass-input").val().trim();
     InitiativeNumber = $("#InitiativeNumber-input").val().trim();
-    database.ref().child("Characters").push({
+    database.ref(`users/${user}`).child("Characters").push({
         name: name,
         maxHealth: maxHealth,
         currentHP: currentHP,
@@ -115,7 +191,7 @@ $(document).on("click", "#new-character",function () {
 // Remove combatant from table
 $(document).on("click", ".Remove", function () {
     removeId = $(this).attr('id')
-    database.ref().child("Characters").child(removeId).remove();
+    database.ref(`users/${user}`).child("Characters").child(removeId).remove();
 });
 
 
@@ -126,7 +202,7 @@ $(document).on("click", ".Heal", function () {
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) + parseInt($("#" + HPId + "-HPinput").val());
     $("#" + HPId + "-HPinput").val("");
-    database.ref().child("Characters").child(HPId).update({
+    database.ref(`users/${user}`).child("Characters").child(HPId).update({
         currentHP: currentHP
     });
 });
@@ -139,14 +215,14 @@ $(document).on("click", ".Damage", function () {
     currentHP = $("#" + HPId + '-HP').attr('value');
     currentHP = parseInt(currentHP) - parseInt($("#" + HPId + "-HPinput").val());
     $("#" + HPId + "-HPinput").val("");
-    database.ref().child("Characters").child(HPId).update({
+    database.ref(`users/${user}`).child("Characters").child(HPId).update({
         currentHP: currentHP
     });
 });
 
 
 // Update HTML on damage or heal
-database.ref().child("Characters").on("value", function (snapshot) {
+database.ref(`users/${user}`).child("Characters").on("value", function (snapshot) {
     $("#" + base + '-HP').text(snapshot.child(base).child("currentHP").val() + "/" + snapshot.child(base).child("maxHealth").val());
     $("#" + base + '-HP').attr("value",snapshot.child(base).child("currentHP").val());
 }, function (errorObject) {
@@ -194,7 +270,7 @@ $("#load-monster").on("click", function(event) {
                 rollInitiative(userMonsterDex);
                 var i;
                 for (i=0; i<quantity; i++){
-                    database.ref().child("Characters").push({
+                    database.ref(`users/${user}`).child("Characters").push({
                         ArmorClass: userMonsterAC,
                         InitiativeNumber: monsterInitiative,
                         currentHP: userMonsterHP,
